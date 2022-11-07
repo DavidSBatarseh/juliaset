@@ -3,6 +3,7 @@
 /* BEGIN: Cython Metadata
 {
     "distutils": {
+        "depends": [],
         "name": "juliaFunction",
         "sources": [
             "juliaFunction.pyx"
@@ -753,6 +754,8 @@ static CYTHON_INLINE float __PYX_NAN() {
 #define __PYX_HAVE__juliaFunction
 #define __PYX_HAVE_API__juliaFunction
 /* Early includes */
+#include <string.h>
+#include <stdlib.h>
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -1184,8 +1187,12 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'cython' */
 
+/* Module declarations from 'libc.string' */
+
+/* Module declarations from 'libc.stdlib' */
+
 /* Module declarations from 'juliaFunction' */
-static PyObject *__pyx_f_13juliaFunction_juliaSet(int, int, int, int, int __pyx_skip_dispatch); /*proto*/
+static PyObject *__pyx_f_13juliaFunction_juliaSet(int, int, int, int, int, int __pyx_skip_dispatch); /*proto*/
 static CYTHON_INLINE PyObject *__Pyx_carray_to_py_int(int *, Py_ssize_t); /*proto*/
 static CYTHON_INLINE PyObject *__Pyx_carray_to_tuple_int(int *, Py_ssize_t); /*proto*/
 #define __Pyx_MODULE_NAME "juliaFunction"
@@ -1202,28 +1209,31 @@ static const char __pyx_k_width[] = "width";
 static const char __pyx_k_height[] = "height";
 static const char __pyx_k_mouseX[] = "mouseX";
 static const char __pyx_k_mouseY[] = "mouseY";
+static const char __pyx_k_maxiterations[] = "maxiterations";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static PyObject *__pyx_n_s_cline_in_traceback;
 static PyObject *__pyx_n_s_height;
 static PyObject *__pyx_n_s_main;
+static PyObject *__pyx_n_s_maxiterations;
 static PyObject *__pyx_n_s_mouseX;
 static PyObject *__pyx_n_s_mouseY;
 static PyObject *__pyx_n_s_name;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_width;
-static PyObject *__pyx_pf_13juliaFunction_juliaSet(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_mouseX, int __pyx_v_mouseY, int __pyx_v_width, int __pyx_v_height); /* proto */
+static PyObject *__pyx_pf_13juliaFunction_juliaSet(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_mouseX, int __pyx_v_mouseY, int __pyx_v_width, int __pyx_v_height, int __pyx_v_maxiterations); /* proto */
 /* Late includes */
 
-/* "juliaFunction.pyx":2
+/* "juliaFunction.pyx":3
  * import cython
- * cpdef juliaSet(int mouseX,int mouseY,int width,int height):             # <<<<<<<<<<<<<<
- *     cdef int iterationArray[160000], x, y, iterations
- *     cdef float complexX, complexY, cx, cy, temporaryValue
+ * from libc.stdlib cimport malloc
+ * cpdef juliaSet(int mouseX,int mouseY,int width,int height, int maxiterations):             # <<<<<<<<<<<<<<
+ *     #cdef int arrayLength = width * height
+ *     #TODO: Dynamically sized array as width * height, set to 500000 for convenience currently.
  */
 
 static PyObject *__pyx_pw_13juliaFunction_1juliaSet(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyObject *__pyx_f_13juliaFunction_juliaSet(int __pyx_v_mouseX, int __pyx_v_mouseY, int __pyx_v_width, int __pyx_v_height, CYTHON_UNUSED int __pyx_skip_dispatch) {
+static PyObject *__pyx_f_13juliaFunction_juliaSet(int __pyx_v_mouseX, int __pyx_v_mouseY, int __pyx_v_width, int __pyx_v_height, int __pyx_v_maxiterations, CYTHON_UNUSED int __pyx_skip_dispatch) {
   int __pyx_v_iterationArray[0x27100];
   int __pyx_v_x;
   int __pyx_v_y;
@@ -1245,15 +1255,16 @@ static PyObject *__pyx_f_13juliaFunction_juliaSet(int __pyx_v_mouseX, int __pyx_
   double __pyx_t_8;
   int __pyx_t_9;
   int __pyx_t_10;
-  PyObject *__pyx_t_11 = NULL;
+  int __pyx_t_11;
+  PyObject *__pyx_t_12 = NULL;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("juliaSet", 0);
 
-  /* "juliaFunction.pyx":5
- *     cdef int iterationArray[160000], x, y, iterations
+  /* "juliaFunction.pyx":9
  *     cdef float complexX, complexY, cx, cy, temporaryValue
+ *     #iterationArray = <float *> malloc(arrayLength * sizeof(float))
  *     for x in range(width):             # <<<<<<<<<<<<<<
  *         for y in range(height):
  * 
@@ -1263,8 +1274,8 @@ static PyObject *__pyx_f_13juliaFunction_juliaSet(int __pyx_v_mouseX, int __pyx_
   for (__pyx_t_3 = 0; __pyx_t_3 < __pyx_t_2; __pyx_t_3+=1) {
     __pyx_v_x = __pyx_t_3;
 
-    /* "juliaFunction.pyx":6
- *     cdef float complexX, complexY, cx, cy, temporaryValue
+    /* "juliaFunction.pyx":10
+ *     #iterationArray = <float *> malloc(arrayLength * sizeof(float))
  *     for x in range(width):
  *         for y in range(height):             # <<<<<<<<<<<<<<
  * 
@@ -1275,105 +1286,104 @@ static PyObject *__pyx_f_13juliaFunction_juliaSet(int __pyx_v_mouseX, int __pyx_
     for (__pyx_t_6 = 0; __pyx_t_6 < __pyx_t_5; __pyx_t_6+=1) {
       __pyx_v_y = __pyx_t_6;
 
-      /* "juliaFunction.pyx":8
+      /* "juliaFunction.pyx":12
  *         for y in range(height):
  * 
  *             complexX = (x-width/2)/(width/3)             # <<<<<<<<<<<<<<
- *             complexY = (y-height/2)/(height/3)
+ *             complexY = (y)/(height/1.5)
  * 
  */
       __pyx_t_7 = (__pyx_v_x - (((double)__pyx_v_width) / 2.0));
       __pyx_t_8 = (((double)__pyx_v_width) / 3.0);
       if (unlikely(__pyx_t_8 == 0)) {
         PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-        __PYX_ERR(0, 8, __pyx_L1_error)
+        __PYX_ERR(0, 12, __pyx_L1_error)
       }
       __pyx_v_complexX = (__pyx_t_7 / __pyx_t_8);
 
-      /* "juliaFunction.pyx":9
+      /* "juliaFunction.pyx":13
  * 
  *             complexX = (x-width/2)/(width/3)
- *             complexY = (y-height/2)/(height/3)             # <<<<<<<<<<<<<<
+ *             complexY = (y)/(height/1.5)             # <<<<<<<<<<<<<<
  * 
  *             cx = (mouseX-width/2)/(width/3)
  */
-      __pyx_t_8 = (__pyx_v_y - (((double)__pyx_v_height) / 2.0));
-      __pyx_t_7 = (((double)__pyx_v_height) / 3.0);
-      if (unlikely(__pyx_t_7 == 0)) {
-        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-        __PYX_ERR(0, 9, __pyx_L1_error)
-      }
-      __pyx_v_complexY = (__pyx_t_8 / __pyx_t_7);
-
-      /* "juliaFunction.pyx":11
- *             complexY = (y-height/2)/(height/3)
- * 
- *             cx = (mouseX-width/2)/(width/3)             # <<<<<<<<<<<<<<
- *             cy = (mouseY-height/2)/(height/3)
- * 
- */
-      __pyx_t_7 = (__pyx_v_mouseX - (((double)__pyx_v_width) / 2.0));
-      __pyx_t_8 = (((double)__pyx_v_width) / 3.0);
+      __pyx_t_8 = (((double)__pyx_v_height) / 1.5);
       if (unlikely(__pyx_t_8 == 0)) {
         PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-        __PYX_ERR(0, 11, __pyx_L1_error)
+        __PYX_ERR(0, 13, __pyx_L1_error)
       }
-      __pyx_v_cx = (__pyx_t_7 / __pyx_t_8);
+      __pyx_v_complexY = (((double)__pyx_v_y) / __pyx_t_8);
 
-      /* "juliaFunction.pyx":12
+      /* "juliaFunction.pyx":15
+ *             complexY = (y)/(height/1.5)
+ * 
+ *             cx = (mouseX-width/2)/(width/3)             # <<<<<<<<<<<<<<
+ *             cy = (mouseY-height)/(height/1.5)
+ * 
+ */
+      __pyx_t_8 = (__pyx_v_mouseX - (((double)__pyx_v_width) / 2.0));
+      __pyx_t_7 = (((double)__pyx_v_width) / 3.0);
+      if (unlikely(__pyx_t_7 == 0)) {
+        PyErr_SetString(PyExc_ZeroDivisionError, "float division");
+        __PYX_ERR(0, 15, __pyx_L1_error)
+      }
+      __pyx_v_cx = (__pyx_t_8 / __pyx_t_7);
+
+      /* "juliaFunction.pyx":16
  * 
  *             cx = (mouseX-width/2)/(width/3)
- *             cy = (mouseY-height/2)/(height/3)             # <<<<<<<<<<<<<<
+ *             cy = (mouseY-height)/(height/1.5)             # <<<<<<<<<<<<<<
  * 
  *             iterations = 0
  */
-      __pyx_t_8 = (__pyx_v_mouseY - (((double)__pyx_v_height) / 2.0));
-      __pyx_t_7 = (((double)__pyx_v_height) / 3.0);
+      __pyx_t_9 = (__pyx_v_mouseY - __pyx_v_height);
+      __pyx_t_7 = (((double)__pyx_v_height) / 1.5);
       if (unlikely(__pyx_t_7 == 0)) {
         PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-        __PYX_ERR(0, 12, __pyx_L1_error)
+        __PYX_ERR(0, 16, __pyx_L1_error)
       }
-      __pyx_v_cy = (__pyx_t_8 / __pyx_t_7);
+      __pyx_v_cy = (((double)__pyx_t_9) / __pyx_t_7);
 
-      /* "juliaFunction.pyx":14
- *             cy = (mouseY-height/2)/(height/3)
+      /* "juliaFunction.pyx":18
+ *             cy = (mouseY-height)/(height/1.5)
  * 
  *             iterations = 0             # <<<<<<<<<<<<<<
- *             while complexX * complexX + complexY * complexY < 2 and iterations < 10:
+ *             while complexX * complexX + complexY * complexY < 2 and iterations < maxiterations:
  *                 temporaryValue = complexX * complexX - complexY * complexY
  */
       __pyx_v_iterations = 0;
 
-      /* "juliaFunction.pyx":15
+      /* "juliaFunction.pyx":19
  * 
  *             iterations = 0
- *             while complexX * complexX + complexY * complexY < 2 and iterations < 10:             # <<<<<<<<<<<<<<
+ *             while complexX * complexX + complexY * complexY < 2 and iterations < maxiterations:             # <<<<<<<<<<<<<<
  *                 temporaryValue = complexX * complexX - complexY * complexY
  *                 complexY = 2 * complexX * complexY + cy
  */
       while (1) {
-        __pyx_t_10 = ((((__pyx_v_complexX * __pyx_v_complexX) + (__pyx_v_complexY * __pyx_v_complexY)) < 2.0) != 0);
-        if (__pyx_t_10) {
+        __pyx_t_11 = ((((__pyx_v_complexX * __pyx_v_complexX) + (__pyx_v_complexY * __pyx_v_complexY)) < 2.0) != 0);
+        if (__pyx_t_11) {
         } else {
-          __pyx_t_9 = __pyx_t_10;
+          __pyx_t_10 = __pyx_t_11;
           goto __pyx_L9_bool_binop_done;
         }
-        __pyx_t_10 = ((__pyx_v_iterations < 10) != 0);
-        __pyx_t_9 = __pyx_t_10;
+        __pyx_t_11 = ((__pyx_v_iterations < __pyx_v_maxiterations) != 0);
+        __pyx_t_10 = __pyx_t_11;
         __pyx_L9_bool_binop_done:;
-        if (!__pyx_t_9) break;
+        if (!__pyx_t_10) break;
 
-        /* "juliaFunction.pyx":16
+        /* "juliaFunction.pyx":20
  *             iterations = 0
- *             while complexX * complexX + complexY * complexY < 2 and iterations < 10:
+ *             while complexX * complexX + complexY * complexY < 2 and iterations < maxiterations:
  *                 temporaryValue = complexX * complexX - complexY * complexY             # <<<<<<<<<<<<<<
  *                 complexY = 2 * complexX * complexY + cy
  *                 complexX = temporaryValue + cx
  */
         __pyx_v_temporaryValue = ((__pyx_v_complexX * __pyx_v_complexX) - (__pyx_v_complexY * __pyx_v_complexY));
 
-        /* "juliaFunction.pyx":17
- *             while complexX * complexX + complexY * complexY < 2 and iterations < 10:
+        /* "juliaFunction.pyx":21
+ *             while complexX * complexX + complexY * complexY < 2 and iterations < maxiterations:
  *                 temporaryValue = complexX * complexX - complexY * complexY
  *                 complexY = 2 * complexX * complexY + cy             # <<<<<<<<<<<<<<
  *                 complexX = temporaryValue + cx
@@ -1381,7 +1391,7 @@ static PyObject *__pyx_f_13juliaFunction_juliaSet(int __pyx_v_mouseX, int __pyx_
  */
         __pyx_v_complexY = (((2.0 * __pyx_v_complexX) * __pyx_v_complexY) + __pyx_v_cy);
 
-        /* "juliaFunction.pyx":18
+        /* "juliaFunction.pyx":22
  *                 temporaryValue = complexX * complexX - complexY * complexY
  *                 complexY = 2 * complexX * complexY + cy
  *                 complexX = temporaryValue + cx             # <<<<<<<<<<<<<<
@@ -1390,7 +1400,7 @@ static PyObject *__pyx_f_13juliaFunction_juliaSet(int __pyx_v_mouseX, int __pyx_
  */
         __pyx_v_complexX = (__pyx_v_temporaryValue + __pyx_v_cx);
 
-        /* "juliaFunction.pyx":20
+        /* "juliaFunction.pyx":24
  *                 complexX = temporaryValue + cx
  * 
  *                 iterations += 1             # <<<<<<<<<<<<<<
@@ -1400,7 +1410,7 @@ static PyObject *__pyx_f_13juliaFunction_juliaSet(int __pyx_v_mouseX, int __pyx_
         __pyx_v_iterations = (__pyx_v_iterations + 1);
       }
 
-      /* "juliaFunction.pyx":21
+      /* "juliaFunction.pyx":25
  * 
  *                 iterations += 1
  *             iterationArray[x + y * 400] = iterations             # <<<<<<<<<<<<<<
@@ -1410,28 +1420,29 @@ static PyObject *__pyx_f_13juliaFunction_juliaSet(int __pyx_v_mouseX, int __pyx_
     }
   }
 
-  /* "juliaFunction.pyx":22
+  /* "juliaFunction.pyx":26
  *                 iterations += 1
  *             iterationArray[x + y * 400] = iterations
  *     return iterationArray             # <<<<<<<<<<<<<<
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_11 = __Pyx_carray_to_py_int(__pyx_v_iterationArray, 0x27100); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 22, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_11);
-  __pyx_r = __pyx_t_11;
-  __pyx_t_11 = 0;
+  __pyx_t_12 = __Pyx_carray_to_py_int(__pyx_v_iterationArray, 0x27100); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 26, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_12);
+  __pyx_r = __pyx_t_12;
+  __pyx_t_12 = 0;
   goto __pyx_L0;
 
-  /* "juliaFunction.pyx":2
+  /* "juliaFunction.pyx":3
  * import cython
- * cpdef juliaSet(int mouseX,int mouseY,int width,int height):             # <<<<<<<<<<<<<<
- *     cdef int iterationArray[160000], x, y, iterations
- *     cdef float complexX, complexY, cx, cy, temporaryValue
+ * from libc.stdlib cimport malloc
+ * cpdef juliaSet(int mouseX,int mouseY,int width,int height, int maxiterations):             # <<<<<<<<<<<<<<
+ *     #cdef int arrayLength = width * height
+ *     #TODO: Dynamically sized array as width * height, set to 500000 for convenience currently.
  */
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_11);
+  __Pyx_XDECREF(__pyx_t_12);
   __Pyx_AddTraceback("juliaFunction.juliaSet", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = 0;
   __pyx_L0:;
@@ -1447,6 +1458,7 @@ static PyObject *__pyx_pw_13juliaFunction_1juliaSet(PyObject *__pyx_self, PyObje
   int __pyx_v_mouseY;
   int __pyx_v_width;
   int __pyx_v_height;
+  int __pyx_v_maxiterations;
   int __pyx_lineno = 0;
   const char *__pyx_filename = NULL;
   int __pyx_clineno = 0;
@@ -1454,12 +1466,14 @@ static PyObject *__pyx_pw_13juliaFunction_1juliaSet(PyObject *__pyx_self, PyObje
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("juliaSet (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_mouseX,&__pyx_n_s_mouseY,&__pyx_n_s_width,&__pyx_n_s_height,0};
-    PyObject* values[4] = {0,0,0,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_mouseX,&__pyx_n_s_mouseY,&__pyx_n_s_width,&__pyx_n_s_height,&__pyx_n_s_maxiterations,0};
+    PyObject* values[5] = {0,0,0,0,0};
     if (unlikely(__pyx_kwds)) {
       Py_ssize_t kw_args;
       const Py_ssize_t pos_args = PyTuple_GET_SIZE(__pyx_args);
       switch (pos_args) {
+        case  5: values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
+        CYTHON_FALLTHROUGH;
         case  4: values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
         CYTHON_FALLTHROUGH;
         case  3: values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
@@ -1480,53 +1494,61 @@ static PyObject *__pyx_pw_13juliaFunction_1juliaSet(PyObject *__pyx_self, PyObje
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_mouseY)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("juliaSet", 1, 4, 4, 1); __PYX_ERR(0, 2, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("juliaSet", 1, 5, 5, 1); __PYX_ERR(0, 3, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_width)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("juliaSet", 1, 4, 4, 2); __PYX_ERR(0, 2, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("juliaSet", 1, 5, 5, 2); __PYX_ERR(0, 3, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
         if (likely((values[3] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_height)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("juliaSet", 1, 4, 4, 3); __PYX_ERR(0, 2, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("juliaSet", 1, 5, 5, 3); __PYX_ERR(0, 3, __pyx_L3_error)
+        }
+        CYTHON_FALLTHROUGH;
+        case  4:
+        if (likely((values[4] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_maxiterations)) != 0)) kw_args--;
+        else {
+          __Pyx_RaiseArgtupleInvalid("juliaSet", 1, 5, 5, 4); __PYX_ERR(0, 3, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "juliaSet") < 0)) __PYX_ERR(0, 2, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "juliaSet") < 0)) __PYX_ERR(0, 3, __pyx_L3_error)
       }
-    } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
+    } else if (PyTuple_GET_SIZE(__pyx_args) != 5) {
       goto __pyx_L5_argtuple_error;
     } else {
       values[0] = PyTuple_GET_ITEM(__pyx_args, 0);
       values[1] = PyTuple_GET_ITEM(__pyx_args, 1);
       values[2] = PyTuple_GET_ITEM(__pyx_args, 2);
       values[3] = PyTuple_GET_ITEM(__pyx_args, 3);
+      values[4] = PyTuple_GET_ITEM(__pyx_args, 4);
     }
-    __pyx_v_mouseX = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_mouseX == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 2, __pyx_L3_error)
-    __pyx_v_mouseY = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_mouseY == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 2, __pyx_L3_error)
-    __pyx_v_width = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_width == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 2, __pyx_L3_error)
-    __pyx_v_height = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_height == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 2, __pyx_L3_error)
+    __pyx_v_mouseX = __Pyx_PyInt_As_int(values[0]); if (unlikely((__pyx_v_mouseX == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 3, __pyx_L3_error)
+    __pyx_v_mouseY = __Pyx_PyInt_As_int(values[1]); if (unlikely((__pyx_v_mouseY == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 3, __pyx_L3_error)
+    __pyx_v_width = __Pyx_PyInt_As_int(values[2]); if (unlikely((__pyx_v_width == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 3, __pyx_L3_error)
+    __pyx_v_height = __Pyx_PyInt_As_int(values[3]); if (unlikely((__pyx_v_height == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 3, __pyx_L3_error)
+    __pyx_v_maxiterations = __Pyx_PyInt_As_int(values[4]); if (unlikely((__pyx_v_maxiterations == (int)-1) && PyErr_Occurred())) __PYX_ERR(0, 3, __pyx_L3_error)
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("juliaSet", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 2, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("juliaSet", 1, 5, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 3, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("juliaFunction.juliaSet", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_13juliaFunction_juliaSet(__pyx_self, __pyx_v_mouseX, __pyx_v_mouseY, __pyx_v_width, __pyx_v_height);
+  __pyx_r = __pyx_pf_13juliaFunction_juliaSet(__pyx_self, __pyx_v_mouseX, __pyx_v_mouseY, __pyx_v_width, __pyx_v_height, __pyx_v_maxiterations);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_13juliaFunction_juliaSet(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_mouseX, int __pyx_v_mouseY, int __pyx_v_width, int __pyx_v_height) {
+static PyObject *__pyx_pf_13juliaFunction_juliaSet(CYTHON_UNUSED PyObject *__pyx_self, int __pyx_v_mouseX, int __pyx_v_mouseY, int __pyx_v_width, int __pyx_v_height, int __pyx_v_maxiterations) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -1535,7 +1557,7 @@ static PyObject *__pyx_pf_13juliaFunction_juliaSet(CYTHON_UNUSED PyObject *__pyx
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("juliaSet", 0);
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __pyx_f_13juliaFunction_juliaSet(__pyx_v_mouseX, __pyx_v_mouseY, __pyx_v_width, __pyx_v_height, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __pyx_f_13juliaFunction_juliaSet(__pyx_v_mouseX, __pyx_v_mouseY, __pyx_v_width, __pyx_v_height, __pyx_v_maxiterations, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_r = __pyx_t_1;
   __pyx_t_1 = 0;
@@ -1821,6 +1843,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
   {&__pyx_n_s_height, __pyx_k_height, sizeof(__pyx_k_height), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
+  {&__pyx_n_s_maxiterations, __pyx_k_maxiterations, sizeof(__pyx_k_maxiterations), 0, 0, 1, 1},
   {&__pyx_n_s_mouseX, __pyx_k_mouseX, sizeof(__pyx_k_mouseX), 0, 0, 1, 1},
   {&__pyx_n_s_mouseY, __pyx_k_mouseY, sizeof(__pyx_k_mouseY), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
@@ -1830,7 +1853,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 5, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 9, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -2116,8 +2139,8 @@ if (!__Pyx_RefNanny) {
 
   /* "juliaFunction.pyx":1
  * import cython             # <<<<<<<<<<<<<<
- * cpdef juliaSet(int mouseX,int mouseY,int width,int height):
- *     cdef int iterationArray[160000], x, y, iterations
+ * from libc.stdlib cimport malloc
+ * cpdef juliaSet(int mouseX,int mouseY,int width,int height, int maxiterations):
  */
   __pyx_t_1 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
